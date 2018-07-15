@@ -14,18 +14,12 @@ namespace BaseGameLogic.Singleton
         protected virtual void CreateInstance()
         {
             if (Instance == null)
-            {
                 Instance = this as T;
-            }
             else
-            {
                 Destroy(gameObject);
-            }
 
             if(Instance != null && _dontDestroyOnLoad)
-            {
                 DontDestroyOnLoad(this.gameObject);
-            }
         }
 
         protected virtual void Awake()
