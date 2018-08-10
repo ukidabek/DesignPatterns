@@ -16,7 +16,10 @@ namespace BaseGameLogic.Singleton
             if (Instance == null)
                 Instance = this as T;
             else
+            {
+                Debug.LogErrorFormat("GameObject {0} will be destroyed.", gameObject.name);
                 Destroy(gameObject);
+            }
 
             if(Instance != null && _dontDestroyOnLoad)
                 DontDestroyOnLoad(this.gameObject);
