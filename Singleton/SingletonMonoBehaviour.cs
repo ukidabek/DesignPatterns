@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace BaseGameLogic.Singleton
 {
-    public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
+    public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBehaviour<T>
     {
         public static T Instance { get; protected set; }
 
@@ -31,6 +31,5 @@ namespace BaseGameLogic.Singleton
         }
 
         protected virtual void Start() {}
-
     }
 }
