@@ -12,9 +12,7 @@ namespace BaseGameLogic.Singleton
             get
             {
                 if(_instance == null)
-                {
                     _instance = Resources.Load(typeof(T).Name) as T;
-                }
 
                 return _instance;
             }
