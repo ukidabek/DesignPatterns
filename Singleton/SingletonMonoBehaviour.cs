@@ -31,5 +31,10 @@ namespace BaseGameLogic.Singleton
         }
 
         protected virtual void Start() {}
+
+        protected virtual void Reset()
+        {
+            gameObject.name = GetType().Name;
+        }
     }
 }
