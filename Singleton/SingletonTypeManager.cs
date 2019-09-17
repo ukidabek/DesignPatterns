@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace BaseGameLogic.Singleton
 {
-
-
     public abstract class SingletonTypeManager<T> : SingletonScriptableObject<T> where T : SingletonScriptableObject<T>
     {
         protected override void Initialize()
