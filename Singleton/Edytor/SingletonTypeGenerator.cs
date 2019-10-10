@@ -5,20 +5,8 @@ using BaseGameLogic.Utilities.Editor;
 
 namespace BaseGameLogic.Singleton
 {
-	public class SingletonTypeGenerator : EditorWindow
+	public partial class SingletonTypeGenerator : EditorWindow
 	{
-		public class CreateAssetMenu : CSharpFileGenerator.Attribute
-		{
-			public override string Name => "CreateAssetMenu";
-			public override string Parameters => string.Format("fileName = \"{0}.asset\", menuName = \"Custom Type/{0}\"", FileName);
-			public string FileName { get; private set; }
-
-			public CreateAssetMenu(string fileName)
-			{
-				FileName = fileName;
-			}
-		}
-
 		private const string Usings = "using UnityEngine;\r\nusing Mechanic.BaseClasses;\r\n\r\n";
 		private const string Mechanic_Class_Heder = "public class {0} : MechanicWithSettings<{0}Settings>";
 		private const string Create_Asset_Menu = "[CreateAssetMenu(fileName = \"{0}.asset\", menuName = \"Custom Type/{0}\")]";
@@ -69,12 +57,20 @@ namespace BaseGameLogic.Singleton
 
 		private void GenerateMechanicScipts()
 		{
-			CSharpFileGenerator generator = new CSharpFileGenerator();
-			generator.Usings.Add(new CSharpFileGenerator.Using("UnityEngine"));
-			generator.ClassAttributes.Add(new CreateAssetMenu("Test"));
-			generator.DerivedFrom += typeof(ScriptableObject).Name;
+			CSharpFile generator = new CSharpFile();
+			//generator.Usings.Add(new CSharpFile.Using("UnityEngine"));
+			generator.cSharpFileElements.Add(new UsingElement("UnityEngine"));
+			generator.cSharpFileElements.Add(new NewLineElement());
+			NamespaceElement namespaceElement = new NamespaceElement("Test");
+			ClassElement classElement = new ClassElement("SuperKlasa");
+			classElement.ClassAttributes.Add(new CreateAssetMenuElement("Test"));
+			classElement.DerivedFrom = typeof(ScriptableObject).Name;
+			namespaceElement.cSharpFileElements.Add(classElement);
+			generator.cSharpFileElements.Add(namespaceElement);
+			//generator.ClassAttributes.Add();
+			//generator.DerivedFrom += typeof(ScriptableObject).Name;
 			generator.Save(Application.dataPath);
-			
+
 			//string data = Usings + string.Format(Mechanic_Class_Heder, _name) + Class_Body;
 			//File.WriteAllText(string.Format("{0}/{1}.cs", _path, _name), data);
 			//data = Usings + string.Format(Mechanic_Settings_Class_Heder, _name) + Class_Body;
