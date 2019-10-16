@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using UnityEditor;
 using UnityEngine;
-using BaseGameLogic.Utilities.Editor;
+using Utilities.Editor;
 
 namespace BaseGameLogic.Singleton
 {
