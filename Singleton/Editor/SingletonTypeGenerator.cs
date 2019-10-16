@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using Utilities.Editor;
@@ -57,25 +58,84 @@ namespace BaseGameLogic.Singleton
 
 		private void GenerateMechanicScipts()
 		{
-			CSharpFile generator = new CSharpFile();
-			//generator.Usings.Add(new CSharpFile.Using("UnityEngine"));
-			generator.cSharpFileElements.Add(new UsingElement("UnityEngine"));
-			generator.cSharpFileElements.Add(new NewLineElement());
-			NamespaceElement namespaceElement = new NamespaceElement("Test");
-			ClassElement classElement = new ClassElement("SuperKlasa");
-			classElement.ClassAttributes.Add(new CreateAssetMenuElement("Test"));
-			classElement.DerivedFrom = typeof(ScriptableObject).Name;
-			namespaceElement.cSharpFileElements.Add(classElement);
-			generator.cSharpFileElements.Add(namespaceElement);
-			//generator.ClassAttributes.Add();
-			//generator.DerivedFrom += typeof(ScriptableObject).Name;
-			generator.Save(Application.dataPath);
+			string name = "SuperKlasa";
 
-			//string data = Usings + string.Format(Mechanic_Class_Heder, _name) + Class_Body;
-			//File.WriteAllText(string.Format("{0}/{1}.cs", _path, _name), data);
-			//data = Usings + string.Format(Mechanic_Settings_Class_Heder, _name) + Class_Body;
-			//File.WriteAllText(string.Format("{0}/{1}Settings.cs", _path, _name), data);
+			CSharpFile customTypeManagerGenerator = new CSharpFile();
+			customTypeManagerGenerator.Name = "SuperKlasaTypeManager";
+
+			customTypeManagerGenerator.cSharpFileElements.Add(new UsingElement(typeof(SingletonTypeGenerator)));
+			customTypeManagerGenerator.cSharpFileElements.Add(new UsingElement(typeof(CreateAssetMenuAttribute)));
+			customTypeManagerGenerator.cSharpFileElements.Add(new UsingElement(typeof(SerializableAttribute)));
+			customTypeManagerGenerator.cSharpFileElements.Add(new NewLineElement());
+
+			NamespaceElement namespaceElement = new NamespaceElement("CustomType");
+			customTypeManagerGenerator.cSharpFileElements.Add(namespaceElement);
+
+			ClassElement managerClass = new ClassElement(string.Format("{0}TypeManager", name));
+			managerClass.ClassAttributes.Add(new CreateAssetMenuElement(name));
+			managerClass.DerivedFrom = new SingletonTypeManagerElement(string.Format("{0}TypeManager", name));
+
+			namespaceElement.cSharpFileElements.Add(managerClass);
+
+			ClassElement typeClass = new ClassElement(name);
+			typeClass.ClassAttributes.Add(new AttributeElement(typeof(SerializableAttribute)));
+			typeClass.DerivedFrom = new CustomTypeEelemnt();
+			namespaceElement.cSharpFileElements.Add(typeClass);
+
+
+			customTypeManagerGenerator.Save(Application.dataPath + "/Test");
+
+			CSharpFile propertyGenerator = new CSharpFile();
+
+			propertyGenerator.cSharpFileElements.Add(new UsingElement(typeof(CustomPropertyDrawer)));
+			propertyGenerator.cSharpFileElements.Add(new UsingElement(typeof(SingletonTypeGenerator)));
+			propertyGenerator.cSharpFileElements.Add(new UsingElement(typeof(CreateAssetMenuAttribute)));
+			propertyGenerator.cSharpFileElements.Add(new UsingElement(typeof(CustomPropertyDrawer)));
+
+
+			propertyGenerator.cSharpFileElements.Add(namespaceElement);
+			ClassElement propertyClass = new ClassElement(string.Format("{0}PropertyDrower", name));
+			propertyGenerator.Name = propertyClass.Name;
+			propertyClass.DerivedFrom = new TypePropertyDrowerElement(managerClass.Name);
+			propertyClass.ClassAttributes.Add(new WeaponModeTypePropertyDrowerAttributeElement(typeClass.Name));
+			namespaceElement.cSharpFileElements.Clear();
+			namespaceElement.cSharpFileElements.Add(propertyClass);
+
+
+			propertyGenerator.Save(Application.dataPath + "/Test/Editor");
+
 			AssetDatabase.Refresh();
+		}
+	}
+
+	internal class SingletonTypeManagerElement : InheritanceElement
+	{
+		public SingletonTypeManagerElement(string name) : base(string.Format("SingletonTypeManager<{0}>", name)) { }
+	}
+
+	internal class TypePropertyDrowerElement : InheritanceElement
+	{
+		public TypePropertyDrowerElement(string name) : base(string.Format("TypePropertyDrower<{0}>", name)) { }
+	}
+
+	internal class CustomTypeEelemnt : InheritanceElement
+	{
+		public CustomTypeEelemnt() : base("BaseGameLogic.Singleton.Type") { }
+	}
+
+	internal class WeaponModeTypePropertyDrowerAttributeElement : AttributeElement
+	{
+		public WeaponModeTypePropertyDrowerAttributeElement(string name) : base(string.Format("CustomPropertyDrawer(typeof({0}), true)", name)) { }
+	}
+
+	internal class CreateAssetMenuElement : AttributeElement
+	{
+		public override string Parameters => string.Format("fileName = \"{0}TypeManager.asset\", menuName = \"Custom Type/{0}\"", FileName);
+		public string FileName { get; private set; }
+
+		public CreateAssetMenuElement(string fileName) : base("CreateAssetMenu")
+		{
+			FileName = fileName;
 		}
 	}
 }
