@@ -5,7 +5,7 @@ using UnityEngine;
 #if CODE_GENERATOR_PRESENT
 using Utilities.Editor.CodeGeneration;
 
-namespace BaseGameLogic.Singleton
+namespace DesignPatterns.Singleton
 {
 	internal class CustomTypeClassGenerator
 	{

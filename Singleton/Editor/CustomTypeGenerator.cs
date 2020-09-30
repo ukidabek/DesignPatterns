@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace BaseGameLogic.Singleton
+namespace DesignPatterns.Singleton
 {
 	public partial class CustomTypeGenerator : EditorWindow
 	{

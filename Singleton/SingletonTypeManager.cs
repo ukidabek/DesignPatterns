@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-namespace BaseGameLogic.Singleton
+namespace DesignPatterns.Singleton
 {
     public abstract class SingletonTypeManager<T> : SingletonScriptableObject<T> where T : SingletonScriptableObject<T>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace BaseGameLogic.Singleton
+namespace DesignPatterns.Singleton
 {
     [Serializable]
     public abstract class Type

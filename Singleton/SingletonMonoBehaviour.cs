@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 
-using System.Collections;
-using System.Collections.Generic;
-
-namespace BaseGameLogic.Singleton
+namespace DesignPatterns.Singleton
 {
     public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBehaviour<T>
     {
