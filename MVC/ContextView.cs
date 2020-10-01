@@ -12,12 +12,18 @@ namespace DesignPatterns.MVC
         public bool AcceptObject(object @object)
         {
             GetViews();
-            return m_views.All(view => view.AcceptObject(@object));   
+            foreach (var VARIABLE in m_views)
+            {
+                if (!VARIABLE.AcceptObject(@object))
+                    return false;
+            }
+
+            return true;
         }
 
         private void GetViews()
         {
-            if(m_views == null)
+            if(m_views == null || m_views.Length == 0)
                 m_views = GetComponents<View>();
         }
 

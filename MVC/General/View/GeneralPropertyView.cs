@@ -8,7 +8,7 @@ namespace DesignPatterns.MVC.General
     {
         [SerializeField] protected string m_propertyName = String.Empty;
 
-        private PropertyInfo GetProperty(object @object) => @object?.GetType().GetProperty(m_propertyName);
+        protected PropertyInfo GetProperty(object @object) => @object?.GetType().GetProperty(m_propertyName);
 
         protected bool IsPropertyType<PropertyType>(object @object)
         {

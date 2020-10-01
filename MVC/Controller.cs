@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -29,10 +30,16 @@ namespace DesignPatterns.MVC
                     view.SetObject(Model);
         }
 
-        private void OnDestroy()
+        private void OnDisable() => DisposeModel();
+
+        private void DisposeModel()
         {
-            m_model?.Dispose();
+            Model?.Dispose();
+            m_model = null;
         }
+
+        private void OnDestroy()=> DisposeModel();
+        
 
         public void HandleSignal(Signal signal)
         {

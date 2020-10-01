@@ -9,16 +9,6 @@ namespace DesignPatterns.MVC.General
         [SerializeField] private Button m_button = null;
         [SerializeField] private SignalType m_signalType = null;
 
-        private void OnEnable()
-        {
-            m_button.onClick.AddListener(OnClick);
-        }
-
-        private void OnDisable()
-        {
-            m_button.onClick.RemoveListener(OnClick);
-        }
-
         public override void OnObjectChanged()
         {
             switch (Object.Status)
@@ -37,7 +27,7 @@ namespace DesignPatterns.MVC.General
             }
         }
 
-        private void OnClick()
+        public void OnClick()
         {
             PropagateSignal(transform.parent);
         }

@@ -6,11 +6,10 @@ namespace DesignPatterns.MVC.General
     public class GeneralTexture2DView : GeneralPropertyView
     {
         [SerializeField] private Image m_image = null; 
-        public override bool AcceptObject(object @object) => base.AcceptObject(@object) && m_propertyName.GetType() == typeof(Texture2D);
+        public override bool AcceptObject(object @object) => base.AcceptObject(@object) && GetProperty(@object).PropertyType == typeof(Texture2D);
 
         public override void OnObjectChanged()
         {
-            
             Texture2D texture = GetProperty().GetValue(Object) as Texture2D;
             if (!texture) return;
             Rect rect = new Rect(0f, 0f, texture.width, texture.height);
